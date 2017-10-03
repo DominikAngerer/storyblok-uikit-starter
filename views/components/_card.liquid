@@ -1,0 +1,7 @@
+{{blok._editable}}
+<div class="uk-card uk-card-body {{blok.modifier | default:'uk-card-default' }}">
+    {% if blok.title != blank %}<h3 class="uk-card-title">{{blok.title}}</h3>{% endif %}
+    {% for item in blok.body %}
+      {% include item.component with blok: item %}
+    {% endfor %}
+</div>

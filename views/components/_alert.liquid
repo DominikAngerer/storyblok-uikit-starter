@@ -1,0 +1,7 @@
+{{blok._editable}}
+<div class="{{blok.modifier}}" uk-alert>
+    <a class="uk-alert-close" uk-close></a>
+    {% for item in blok.body %}
+      {% include item.component with blok: item %}
+    {% endfor %}
+</div>

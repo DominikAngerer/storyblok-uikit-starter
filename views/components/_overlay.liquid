@@ -1,0 +1,9 @@
+{{blok._editable}}
+<div class="uk-inline">
+  <img src="{{blok.image}}" alt="{{blok.alt}}">
+  {% if blok.markdown != blank %}
+    <div class="uk-overlay uk-position-bottom">
+      {{blok.markdown|markdown}}
+    </div>
+  {% endif %}
+</div>

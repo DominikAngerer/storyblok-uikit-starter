@@ -1,0 +1,25 @@
+{% set ftr from story id: 'footer' %}
+{{ ftr.content._editable }}
+<div>
+  <div class="uk-section uk-section-secondary">
+    <div class="uk-container">
+      {% for item in ftr.content.body %}
+        {% include item.component with blok: item %}
+      {% endfor %}
+    </div>
+  </div>
+  <div class="uk-section uk-section-secondary uk-padding-remove-vertical">
+    <div class="uk-margin-remove-vertical uk-grid uk-grid-stack">
+      <div class="uk-width-1-1@m">
+        <hr>
+      </div>
+    </div>
+  </div>
+  <div class="uk-section uk-section-secondary uk-section-xsmall">
+    <div class="uk-container">
+      <div class="uk-margin uk-text-center uk-text-muted uk-text-small">
+        Made with <a class="uk-text-muted" href="https://www.storyblok.com">Storyblok</a>
+      </div>
+    </div>
+  </div>
+</div>

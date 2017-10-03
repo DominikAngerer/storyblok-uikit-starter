@@ -1,0 +1,24 @@
+{% set navigation from story id: 'navigation' %}
+{{ navigation.content._editable }}
+<nav class="uk-navbar-container" uk-navbar>
+    <div class="uk-navbar-left">
+  
+        <ul class="uk-navbar-nav">
+            {% for navitem in navigation.content.navitems %}
+              <li>
+                  <a href="{{navitem.link|url}}">{{navitem.display}}</a>
+                  {% if navitem.submenuitems != blank %}
+                  <div class="uk-navbar-dropdown">
+                      <ul class="uk-nav uk-navbar-dropdown-nav">
+                          {% for submenuitem in navitem.submenuitems %}
+                          <li><a href="{{submenuitem.link|url}}">{{submenuitem.display}}</a></li>
+                          {% endfor %}
+                      </ul>
+                  </div>
+                  {% endif %}
+              </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+</nav>

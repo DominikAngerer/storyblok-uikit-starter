@@ -1,0 +1,6 @@
+{{blok._editable}}
+<div class="markdown uk-text-break {{blok.modifier}}">
+  {% if blok.markdown != blank %}
+    {{blok.markdown | markdown }}
+  {% endif %}
+</div>

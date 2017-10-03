@@ -1,0 +1,110 @@
+{{blok._editable}}
+<div>
+  {% if blok.teaser_image != blank %}
+    <div class="uk-section uk-background-cover uk-height-large" style="background-image:url('{{blok.teaser_image | resize: '1200x0'}}')">
+      
+    </div>
+  {% endif %}
+  <div class="uk-section">
+    <div class="uk-container">
+      
+      {% if blok.sidebar_content != blank %}
+      <div class="uk-grid" uk-grid>
+        
+        {% if blok.sidebar_position == 'left' %}
+        <div class="uk-width-1-1@s uk-width-1-3@m uk-width-1-3@l">
+          {% for child in blok.sidebar_content %}
+            {% include child.component with blok: child %}
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="uk-width-1-1@s uk-width-2-3@m uk-width-2-3@l">
+      {% endif %}
+
+      <article class="uk-article" id="{{story.id}}" typeof="Article">
+        <meta property="name" content="{{blok.title | default:story.name}}">
+        <meta property="author" typeof="Person" content="{{blok.author}}">
+        <meta property="dateModified" content="{{ blok.date | default:story.published_at }}">
+        <meta class="uk-margin-remove-adjacent" property="datePublished" content="{{ blok.date | default:story.published_at| default:story.created_at }}">
+
+        <h1 class="uk-article-title">{{blok.title | default:story.name }}</h1>
+
+        <p class="uk-article-meta">{{blok.author | default:'author'}} - {{ blok.date | default:story.published_at| default:story.created_at | date: "%b %d, %Y"}}</p>
+        
+        {% for child in blok.content %}
+          {% include child.component with blok: child %}
+        {% endfor %}
+      </article>
+
+      {% if blok.sidebar_content != blank %}
+        </div>
+
+        {% if blok.sidebar_position == 'right' or blok.sidebar_position == blank %}
+        <div class="uk-width-1-1@s uk-width-1-3@m uk-width-1-3@l">
+          {% for child in blok.sidebar_content %}
+            {% include child.component with blok: child %}
+          {% endfor %}
+        </div>
+        {% endif %}
+
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="uk-section uk-section-muted">
+    <div class="uk-container">    
+      <div class="uk-grid" uk-grid>
+        {% assign slug = story.full_slug | split :'/' %}
+        {% set articles from stories starts_with: slug[0] , per_page:3, sort_by:'random():asc', is_startpage:false %}
+        {% for article in articles.data %}
+          <div class="uk-width-1-1@s uk-width-1-3@m uk-width-1-3@l">
+            {{article.content._editable}}
+            <div id="{{article.id}}" class="uk-article" typeof="Article">
+              <meta property="name" content="{{article.content.title | default:article.name}}">
+              <meta property="author" typeof="Person" content="{{article.content.author}}">
+              <meta property="dateModified" content="{{ article.content.date | default:story.published_at }}">
+              <meta class="uk-margin-remove-adjacent" property="datePublished" content="{{ article.content.date | default:story.published_at| default:story.created_at }}">
+              {% if article.content.teaser_image != blank %}
+              <div class="uk-margin-small-bottom uk-margin-remove-top" property="image" typeof="ImageObject">
+                <a href="/{{article.full_slug}}">
+                  <img width="1200" height="600" 
+                    src="{{article.content.teaser_image | resize: '786x0'}}" 
+                    alt="{{article.content.title | default:article.name}}" 
+                    property="url" 
+                    srcset="
+                    {{article.content.teaser_image | resize: '1200x0'}} 1200w, 
+                    {{article.content.teaser_image | resize: '300x0'}} 300w, 
+                    {{article.content.teaser_image | resize: '768x0'}} 768w, 
+                    {{article.content.teaser_image | resize: '1024x0'}} 1024w" 
+                    sizes="(max-width: 1200px) 100vw, 1200px">
+                </a>
+              </div>
+              {% endif %}
+              
+              <div class="uk-margin-small-bottom ">
+                <ul class="uk-subnav uk-subnav-divider uk-margin-remove-bottom">
+                    <li><span><time datetime="{{ article.content.date | default:story.published_at| default:story.created_at }}">{{ article.content.date | default:article.published_at| default:article.created_at | date: "%b %d, %Y" }}</time></span></li>
+                    <li><span>{{article.content.author|default:'author'}}</span></li>
+                </ul>
+
+                <h2 class="uk-article-title uk-margin-remove">
+                  <a class="uk-link-reset uk-h3" href="/{{article.full_slug}}">{{article.content.title | default:article.name}}</a>
+                </h2>
+              </div>
+          
+              <div property="text">
+                <p class="uk-text">{{article.content.teaser_text}}</p>
+              </div>
+
+              <p class="uk-margin">
+                <a class="uk-button uk-button-default" href="/{{article.full_slug}}">Continue reading</a>
+              </p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

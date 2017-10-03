@@ -1,0 +1,6 @@
+{{blok._editable}}
+<div class="uk-tile {{blok.modifier}}">
+  {% for child in blok.body %}
+    {% include child.component with blok:child %}
+  {% endfor %}
+</div>

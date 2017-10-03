@@ -1,0 +1,60 @@
+{{blok._editable}}
+<div class="uk-section">
+  <div class="uk-container">
+    {% set articles from stories starts_with: story.full_slug, per_page:5, is_startpage:false %}
+
+    <div class="uk-grid" uk-grid>
+      <div class="uk-width-1-1@s uk-width-2-3@m uk-width-2-3@l">
+        {% for article in articles.data %}
+          {{article.content._editable}}
+          <article id="{{article.id}}" class="uk-article" typeof="Article">
+            <meta property="name" content="{{article.content.title | default:article.name}}">
+            <meta property="author" typeof="Person" content="{{article.content.author}}">
+            <meta property="dateModified" content="{{ article.content.date | default:story.published_at }}">
+            <meta class="uk-margin-remove-adjacent" property="datePublished" content="{{ article.content.date | default:story.published_at| default:story.created_at }}">
+            {% if article.content.teaser_image != blank %}
+            <div class="uk-margin-small-bottom uk-margin-remove-top" property="image" typeof="ImageObject">
+              <a href="/{{article.full_slug}}">
+                <img width="1200" height="600" 
+                  src="{{article.content.teaser_image | resize: '786x0'}}" 
+                  alt="{{article.content.title | default:article.name}}" 
+                  property="url" 
+                  srcset="
+                  {{article.content.teaser_image | resize: '1200x0'}} 1200w, 
+                  {{article.content.teaser_image | resize: '300x0'}} 300w, 
+                  {{article.content.teaser_image | resize: '768x0'}} 768w, 
+                  {{article.content.teaser_image | resize: '1024x0'}} 1024w" 
+                  sizes="(max-width: 1200px) 100vw, 1200px">
+              </a>
+            </div>
+            {% endif %}
+            
+            <div class="uk-margin-medium-bottom ">
+              <ul class="uk-subnav uk-subnav-divider">
+                  <li><span><time datetime="{{ article.content.date | default:story.published_at| default:story.created_at }}">{{ article.content.date | default:article.published_at| default:article.created_at | date: "%b %d, %Y" }}</time></span></li>
+                  <li><span>{{article.content.author|default:'author'}}</span></li>
+              </ul>
+
+              <h2 class="uk-article-title uk-margin-remove-top">
+                <a class="uk-link-reset" href="/{{article.full_slug}}">{{article.content.title | default:article.name}}</a>
+              </h2>
+            </div>
+
+            <div property="text">
+              <p class="uk-text-large">{{article.content.teaser_text}}</p>
+            </div>
+
+            <p class="uk-margin-medium">
+              <a class="uk-button uk-button-default" href="/{{article.full_slug}}">Continue reading</a>
+            </p>
+          </article>
+        {% endfor %}
+      </div>
+      <div class="uk-width-1-1@s uk-width-1-3@m uk-width-1-3@l">
+        {% for blok in blok.sidebar %}
+          {% include blok.component %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

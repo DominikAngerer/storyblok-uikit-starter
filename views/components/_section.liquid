@@ -1,0 +1,8 @@
+{{blok._editable}}
+<div class="uk-section {{blok.modifier}} uk-background-cover uk-background-center-center" {% if blok.background_image != blank %} style="background-image:url('{{blok.background_image|resize: '1200x0'}}')"{% endif %}>
+  <div class="uk-container">
+    {% for child in blok.body %}
+      {% include child.component with blok:child %}
+    {% endfor %}
+  </div>
+</div>
