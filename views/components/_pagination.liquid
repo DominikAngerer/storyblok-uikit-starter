@@ -1,0 +1,24 @@
+{% assign pages = entries.total | times: 10 | divided_by: entries.per_page | plus: 9 | divided_by: 10 %}
+{% assign current_page = params.page | round %}
+{% assign _prev = current_page | minus: 1 %}
+{% assign _next = current_page | plus: 1 %}
+{% if pages > 1 %}
+  <ul class="uk-pagination uk-flex-center" uk-margin>
+    {% if _prev > 0 %}
+    <li><a href="/{{story.full_slug}}?page={{ _prev }}"><span uk-pagination-previous></span></a></li>
+    {% endif %}
+
+    {% for available_page in (1..pages) %}
+      {% if current_page == blank and available_page == 1 %}
+        <li class="uk-active" ><a href="/{{story.full_slug}}?page={{available_page}}">{{available_page}}</a></li>
+      {% else %}
+        <li {% if current_page == available_page %}class="uk-active"{% endif %}><a href="/{{story.full_slug}}?page={{available_page}}">{{available_page}}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    {% if _next <= pages %}
+    <li><a href="/{{story.full_slug}}?page={{ _next }}"><span uk-pagination-next></span></a></li>
+    {% endif %}
+  </ul>
+{% endif %}
+

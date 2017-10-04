@@ -1,7 +1,7 @@
 {{blok._editable}}
 <div class="uk-section">
   <div class="uk-container">
-    {% set articles from stories starts_with: story.full_slug, per_page:5, is_startpage:false %}
+    {% set articles from stories starts_with: story.full_slug, per_page:1, is_startpage:false %}
 
     <div class="uk-grid" uk-grid>
       <div class="uk-width-1-1@s uk-width-2-3@m uk-width-2-3@l">
@@ -29,7 +29,7 @@
             </div>
             {% endif %}
             
-            <div class="uk-margin-medium-bottom ">
+            <div>
               <ul class="uk-subnav uk-subnav-divider">
                   <li><span><time datetime="{{ article.content.date | default:story.published_at| default:story.created_at }}">{{ article.content.date | default:article.published_at| default:article.created_at | date: "%b %d, %Y" }}</time></span></li>
                   <li><span>{{article.content.author|default:'author'}}</span></li>
@@ -48,13 +48,17 @@
               <a class="uk-button uk-button-default" href="/{{article.full_slug}}">Continue reading</a>
             </p>
           </article>
+          <hr class="uk-margin-large-bottom">
         {% endfor %}
-      </div>
-      <div class="uk-width-1-1@s uk-width-1-3@m uk-width-1-3@l">
+
+        {% include 'pagination' with entries: articles %}
+
+        </div>
+        <div class="uk-width-1-1@s uk-width-1-3@m uk-width-1-3@l">
         {% for blok in blok.sidebar %}
           {% include blok.component %}
         {% endfor %}
-      </div>
+        </div>
     </div>
   </div>
 </div>
